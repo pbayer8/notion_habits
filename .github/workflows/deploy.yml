@@ -39,7 +39,7 @@ jobs:
           log-response: true
 
       - name: "Use response"
-        run: echo ${{ steps.api.outputs.response }} > ./dist/data.json
+        run: echo ${{ steps.api.outputs.response.data }} > ./dist/data.json
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
