@@ -28,16 +28,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v2
-        with:
-          name: production-files
-          path: ./dist
-  curl:
-    name: "Perform REST API"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Call API 1"
+      - name: "Call API"
         uses: indiesdev/curl@v1.1
         id: api
         with:
@@ -46,8 +37,15 @@ jobs:
           headers: '{"Notion-Version":"2021-08-16","Content-Type":"application/json"}'
           bearer-token: ${{ secrets.NOTION_KEY }}
           log-response: true
+
       - name: "Use response"
-        run: echo ${{ steps.api.outputs.response }} > ./data.json
+        run: echo ${{ steps.api.outputs.response }} > ./dist/data.json
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v2
+        with:
+          name: production-files
+          path: ./dist
 
   deploy:
     name: Deploy
