@@ -43,7 +43,8 @@ jobs:
         with:
           url: https://api.notion.com/v1/databases/${{ secrets.NOTION_DATABASE_ID}}
           method: "GET"
-          headers: '{"Authorization":"Bearer ${{ secrets.NOTION_KEY }}","Notion-Version":"2021-08-16","Content-Type":"application/json"}'
+          headers: '{"Notion-Version":"2021-08-16","Content-Type":"application/json"}'
+          bearer-token: ${{ secrets.NOTION_KEY }}
           log-response: true
       - name: "Use response"
         run: echo ${{ steps.api.outputs.response }} > ./data.json
