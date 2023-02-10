@@ -34,7 +34,6 @@ jobs:
           name: production-files
           path: ./dist
   curl:
-    environment: "github-pages"
     name: "Perform REST API"
     runs-on: ubuntu-latest
     steps:
