@@ -15,12 +15,13 @@
     const checkMap = Object.fromEntries(checks);
     return { created_time, checks: checkMap };
   });
-  const categories = data[0].checks.map((c) => c.name);
+  const categories = Object.keys(data[0].checks).sort();
   const pastWeek = data.filter((d) => {
     const { created_time } = d;
     const date = new Date(created_time);
     const now = new Date();
     const diff = now - date;
+    console.log(diff, created_time);
     const days = diff / (1000 * 60 * 60 * 24);
     return days < 7;
   });
@@ -40,6 +41,7 @@
     const days = diff / (1000 * 60 * 60 * 24);
     return days < 365;
   });
+  console.log(pastWeek, pastMonth, pastYear);
   const numChecksPastWeek = pastWeek.reduce((acc, d) => {
     const { checks } = d;
     Object.entries(checks).forEach(([name, checked]) => {
