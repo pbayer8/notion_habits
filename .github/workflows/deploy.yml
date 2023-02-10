@@ -43,10 +43,10 @@ jobs:
       # # same api but with curl piped to file
       - name: "Call API"
         run: |
-          curl -X POST https://api.notion.com/v1/databases/${{ NOTION_DATABASE_ID }}/query \
+          curl -X POST https://api.notion.com/v1/databases/${{ secrets.NOTION_DATABASE_ID }}/query \
           -H "Notion-Version: 2021-08-16" \
           -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${{ NOTION_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
           -d "{}" > ./dist/data.json
 
       - name: Upload production-ready build files
