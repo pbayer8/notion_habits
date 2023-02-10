@@ -37,6 +37,8 @@ jobs:
       #     headers: '{"Notion-Version":"2021-08-16","Content-Type":"application/json"}'
       #     bearer-token: ${{ secrets.NOTION_KEY }}
       #     log-response: true
+      # - name: "Use response"
+      #   run: echo ${{ steps.api.outputs.response.data }} > ./dist/data.json
 
       # # same api but with curl piped to file
       - name: "Call API"
@@ -46,8 +48,6 @@ jobs:
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ NOTION_KEY }}" \
           -d "{}" > ./dist/data.json
-      - name: "Use response"
-        run: echo ${{ steps.api.outputs.response.data }} > ./dist/data.json
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
