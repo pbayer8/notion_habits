@@ -31,8 +31,9 @@ jobs:
         uses: indiesdev/curl@v1.1
         id: api
         with:
-          url: https://api.notion.com/v1/databases/${{ secrets.NOTION_DATABASE_ID}}
-          method: "GET"
+          url: https://api.notion.com/v1/databases/${{ secrets.NOTION_DATABASE_ID}}/query
+          method: "POST"
+          body: "{}"
           headers: '{"Notion-Version":"2021-08-16","Content-Type":"application/json"}'
           bearer-token: ${{ secrets.NOTION_KEY }}
           log-response: true
