@@ -110,6 +110,7 @@
       </div>
     </div>
   {/each}
+  <h2 class="last-update">Last refreshed: {new Date().toLocaleString()}</h2>
 </main>
 
 <style>
@@ -129,6 +130,9 @@
     flex-direction: column;
     gap: 0.4rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  }
+  .last-update {
+    margin: 0.5rem;
   }
   .times {
     display: flex;
