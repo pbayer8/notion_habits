@@ -1,22 +1,25 @@
 <script>
   import d from "./data.json";
 
-  const targetPercentages = {
-    Workout: 4 / 7,
-    Write: 1 / 7,
-    Bike: 2 / 7,
-    Run: 2 / 7,
-    Read: 5 / 7,
-    "Eat healthy": 5 / 7,
-    Stretch: 5 / 7,
-    "Dream journal": 1 / 7,
-    "Personal project": 3 / 7,
-    Handstand: 2 / 7,
-    "Rice bucket": 2 / 7,
-    Meditate: 4 / 7,
-    Climb: 3 / 7,
-    default: 0.3,
+  const targetDaysPerWeek = {
+    Workout: 4,
+    Write: 1,
+    Bike: 2,
+    Run: 2,
+    Read: 5,
+    "Eat healthy": 5,
+    Stretch: 5,
+    "Dream journal": 1,
+    "Personal project": 3,
+    Handstand: 2,
+    "Rice bucket": 2,
+    Meditate: 4,
+    Climb: 3,
+    default: 3,
   };
+  const targetPercentages = Object.fromEntries(
+    Object.entries(targetDaysPerWeek).map(([k, v]) => [k, v / 7])
+  );
 
   const { results } = d;
   const data = results.map((r) => {
@@ -80,18 +83,10 @@
     let h = hash % 360;
     return h;
   };
-  // maps percentage of 0% to 100% to a gradient of red to green
   const percentHues = (percent, category) => {
     percent = percent || 0;
     const percentOfTarget =
       percent / (targetPercentages[category] || targetPercentages.default) || 0;
-    console.log(
-      category,
-      percent,
-      percentOfTarget,
-      targetPercentages[category]
-    );
-    // const hue = (percentOfTarget * 100).toFixed(0);
     const clampedPercentOfTarget = Math.min(1, percentOfTarget);
     const hue = (clampedPercentOfTarget * 120).toFixed(0);
     return hue;
@@ -101,9 +96,14 @@
 <main>
   {#each categories as category}
     <div class="card">
-      <h2>
-        {category}
-      </h2>
+      <div class="category">
+        <h2 class="main">
+          {category}
+        </h2>
+        <h2>
+          Goal: {targetDaysPerWeek[category] || targetDaysPerWeek.default}/7
+        </h2>
+      </div>
       <div class="times">
         {#each numChecksByDate as { name, days, past, numChecks }}
           <div
@@ -165,6 +165,11 @@
     padding: 0.6rem;
     border-radius: 0.3rem;
   }
+  .category {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   h2 {
     margin: 0;
     text-transform: uppercase;
@@ -181,7 +186,6 @@
     font-size: 0.8rem;
     color: var(--text-color);
   }
-
   @media (prefers-color-scheme: dark) {
     main {
       --bg-color: #000;
