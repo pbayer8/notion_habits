@@ -113,7 +113,9 @@
   <div class="card">
     <h2 class="last-update">Last refreshed: {new Date().toLocaleString()}</h2>
     <h2 class="last-update">
-      Last built: {new Date(import.meta.env.VITE_LAST_BUILD).toLocaleString()}
+      Last built: {new Date(
+        parseInt(import.meta.env.VITE_LAST_BUILD) * 1000
+      ).toLocaleString()}
     </h2>
   </div>
 </main>
