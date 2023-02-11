@@ -33,7 +33,7 @@ jobs:
           -d "{}" > ./src/data.json
 
       - name: Get time
-        run: echo "VITE_LAST_BUILD=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+        run: echo "VITE_LAST_BUILD=$(date +%s)" >> $GITHUB_ENV
 
       - name: Build project
         run: npm run build
