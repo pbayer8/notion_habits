@@ -110,7 +110,13 @@
       </div>
     </div>
   {/each}
-  <h2 class="last-update">Last refreshed: {new Date().toLocaleString()}</h2>
+  <div class="card">
+    <h2 class="last-update">Last refreshed: {new Date().toLocaleString()}</h2>
+    <h2 class="last-update">
+      Last refreshed: {new Date(import.meta.env.VITE_LAST_BUILD)}
+      {import.meta.env.VITE_LAST_BUILD}
+    </h2>
+  </div>
 </main>
 
 <style>
@@ -128,20 +134,17 @@
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.3rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-  }
-  .last-update {
-    margin: 0.5rem;
   }
   .times {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+    gap: 0.6rem;
   }
   .time {
     padding: 0.6rem;
-    margin: 0.3rem;
     border-radius: 0.3rem;
   }
   h2 {

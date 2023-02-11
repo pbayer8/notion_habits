@@ -32,6 +32,9 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
           -d "{}" > ./src/data.json
 
+      - name: Get time
+        run: echo "VITE_LAST_BUILD=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
       - name: Build project
         run: npm run build
 
