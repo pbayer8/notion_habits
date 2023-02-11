@@ -87,7 +87,7 @@
       percent / (targetPercentages[category] || targetPercentages.default) || 0;
     const clampedPercentOfTarget = Math.min(1, percentOfTarget);
     const hue = (clampedPercentOfTarget * 120).toFixed(0);
-    return `hsl(${hue}, 90%, 80%)`;
+    return hue;
   };
 </script>
 
@@ -101,7 +101,9 @@
         {#each numChecksByDate as { name, days, past, numChecks }}
           <div
             class="time"
-            style:background={percentHues(numChecks[category] / past.length)}
+            style:background={`hsl(${percentHues(
+              numChecks[category] / past.length
+            )}, var(--card-saturation), var(--card-lightness))`}
           >
             <h3>{numChecks[category] || 0}</h3>
             <p>/ {past.length} days</p>
@@ -127,16 +129,23 @@
     align-items: flex-start;
     justify-content: flex-start;
     font-family: sans-serif;
+    --bg-color: #fff;
+    --text-color: #000;
+    --border-color: #ccc;
+    --card-lightness: 80%;
+    --card-saturation: 90%;
   }
   .card {
     margin: 0.5rem;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    background: var(--bg-color);
+    color: var(--text-color);
   }
   .times {
     display: flex;
@@ -152,13 +161,26 @@
     margin: 0;
     text-transform: uppercase;
     font-size: 0.8rem;
+    color: var(--text-color);
   }
   h3 {
     margin: 0;
     font-size: 3rem;
+    color: var(--text-color);
   }
   p {
     margin: 0;
     font-size: 0.8rem;
+    color: var(--text-color);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    main {
+      --bg-color: #000;
+      --text-color: #fff;
+      --border-color: #444;
+      --card-lightness: 20%;
+      --card-saturation: 70%;
+    }
   }
 </style>
