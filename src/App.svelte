@@ -5,7 +5,7 @@
     Workout: 4 / 7,
     Write: 1 / 7,
     Bike: 2 / 7,
-    Run: 1 / 7,
+    Run: 2 / 7,
     Read: 5 / 7,
     "Eat healthy": 5 / 7,
     Stretch: 5 / 7,
@@ -85,6 +85,13 @@
     percent = percent || 0;
     const percentOfTarget =
       percent / (targetPercentages[category] || targetPercentages.default) || 0;
+    console.log(
+      category,
+      percent,
+      percentOfTarget,
+      targetPercentages[category]
+    );
+    // const hue = (percentOfTarget * 100).toFixed(0);
     const clampedPercentOfTarget = Math.min(1, percentOfTarget);
     const hue = (clampedPercentOfTarget * 120).toFixed(0);
     return hue;
@@ -102,7 +109,8 @@
           <div
             class="time"
             style:background={`hsl(${percentHues(
-              numChecks[category] / past.length
+              numChecks[category] / past.length,
+              category
             )}, var(--card-saturation), var(--card-lightness))`}
           >
             <h3>{numChecks[category] || 0}</h3>
