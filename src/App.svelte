@@ -100,7 +100,7 @@
         <h2 class="main">
           {category}
         </h2>
-        <h2>
+        <h2 class="goal">
           Goal: {targetDaysPerWeek[category] || targetDaysPerWeek.default}/7
         </h2>
       </div>
@@ -175,6 +175,9 @@
     text-transform: uppercase;
     font-size: 0.8rem;
     color: var(--text-color);
+  }
+  h2.goal {
+    opacity: 0.5;
   }
   h3 {
     margin: 0;
