@@ -1,6 +1,6 @@
 <script>
   import d from "./data.json";
-
+  // TODO: type annotate data from: https://github.com/makenotion/notion-sdk-js/blob/97c98419e7106a4865cdbb6230ceeebf40ae39e3/src/api-endpoints.ts#L10434
   const targetDaysPerWeek = {
     Workout: 4,
     Write: 1,
