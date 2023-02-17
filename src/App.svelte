@@ -1,28 +1,8 @@
 <script>
   import d from "./data.json";
+  import g from "./goals.json";
   // TODO: type annotate data from: https://github.com/makenotion/notion-sdk-js/blob/97c98419e7106a4865cdbb6230ceeebf40ae39e3/src/api-endpoints.ts#L10434
-  const targetDaysPerWeek = {
-    Workout: 4,
-    Write: 1,
-    Bike: 2,
-    Run: 2,
-    Read: 5,
-    "Eat healthy": 5,
-    Stretch: 5,
-    "Dream journal": 1,
-    "Personal project": 3,
-    Handstand: 2,
-    "Rice bucket": 2,
-    Meditate: 4,
-    Climb: 3,
-    default: 3,
-  };
-  const targetPercentages = Object.fromEntries(
-    Object.entries(targetDaysPerWeek).map(([k, v]) => [k, v / 7])
-  );
-
-  const { results } = d;
-  const data = results.map((r) => {
+  const data = d.results.map((r) => {
     const { created_time, properties } = r;
     const checks = Object.entries(properties)
       .filter(([name, v]) => {
@@ -36,7 +16,27 @@
     const checkMap = Object.fromEntries(checks);
     return { created_time, checks: checkMap };
   });
-  const categories = Object.keys(data[0].checks).sort();
+  const targetDaysPerWeek = Object.fromEntries(
+    g.results
+      .map(({ properties }) => {
+        if (
+          properties?.Name?.title[0]?.plain_text &&
+          properties["Days per week"]?.number
+        ) {
+          return [
+            properties.Name.title[0].plain_text,
+            properties["Days per week"].number,
+          ];
+        }
+      })
+      .filter(Boolean)
+  );
+  const targetPercentages = Object.fromEntries(
+    Object.entries(targetDaysPerWeek).map(([k, v]) => [k, v / 7])
+  );
+  const categories = Object.keys(data[0].checks)
+    .sort()
+    .filter((k) => targetDaysPerWeek[k]);
   const dateRanges = [
     { name: "week", days: 7 },
     { name: "month", days: 30 },
@@ -86,7 +86,8 @@
   const percentHues = (percent, category) => {
     percent = percent || 0;
     const percentOfTarget =
-      percent / (targetPercentages[category] || targetPercentages.default) || 0;
+      percent / (targetPercentages[category] || targetPercentages._default) ||
+      0;
     const clampedPercentOfTarget = Math.min(1, percentOfTarget);
     const hue = (clampedPercentOfTarget * 120).toFixed(0);
     return hue;
@@ -101,7 +102,7 @@
           {category}
         </h2>
         <h2 class="goal">
-          Goal: {targetDaysPerWeek[category] || targetDaysPerWeek.default}/7
+          Goal: {targetDaysPerWeek[category] || targetDaysPerWeek._default}/7
         </h2>
       </div>
       <div class="times">

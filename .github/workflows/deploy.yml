@@ -32,6 +32,14 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
           -d "{}" > ./src/data.json
 
+      - name: "Call Goals API"
+        run: |
+          curl -X POST https://api.notion.com/v1/databases/${{ secrets.NOTION_GOALS_ID }}/query \
+          -H "Notion-Version: 2021-08-16" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
+          -d "{}" > ./src/goals.json
+
       - name: Get time
         run: echo "VITE_LAST_BUILD=$(date +%s)" >> $GITHUB_ENV
 
@@ -39,7 +47,7 @@ jobs:
         run: npm run build
 
       - name: "Copy raw data"
-        run: "cp ./src/data.json ./dist/data.json"
+        run: "cp ./src/data.json ./dist/data.json; cp ./src/goals.json ./dist/goals.json"
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
