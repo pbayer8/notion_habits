@@ -6,7 +6,10 @@ on:
       - main
   schedule:
     - cron: "*/15 * * * *"
-
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
   build:
     name: Build
@@ -14,16 +17,13 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 16
-
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
-
       - name: "Call API"
         run: |
           curl -X POST https://api.notion.com/v1/databases/${{ secrets.NOTION_DATABASE_ID }}/query \
@@ -31,7 +31,6 @@ jobs:
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
           -d "{}" > ./src/data.json
-
       - name: "Call Goals API"
         run: |
           curl -X POST https://api.notion.com/v1/databases/${{ secrets.NOTION_GOALS_ID }}/query \
@@ -39,37 +38,16 @@ jobs:
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
           -d "{}" > ./src/goals.json
-
       - name: Get time
         run: echo "VITE_LAST_BUILD=$(date +%s)" >> $GITHUB_ENV
-
       - name: Build project
         run: npm run build
-
       - name: "Copy raw data"
         run: "cp ./src/data.json ./dist/data.json; cp ./src/goals.json ./dist/goals.json"
-
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: production-files
-          path: ./dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: production-files
-          path: ./dist
-
+          path: "./dist"
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+        id: deployment
+        uses: actions/deploy-pages@v1
