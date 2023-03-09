@@ -99,5 +99,13 @@
         parseInt(import.meta.env.VITE_LAST_BUILD) * 1000
       ).toLocaleString()}
     </CardTitle>
+    <button
+      on:click={() => window.location.reload()}
+      class="w-fit rounded-lg border
+      border-solid border-gray-300 bg-white p-2 
+      shadow dark:border-gray-600 dark:bg-black"
+    >
+      <CardTitle>Refresh</CardTitle>
+    </button>
   </Card>
 </main>
