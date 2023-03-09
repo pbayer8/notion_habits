@@ -59,7 +59,13 @@
       else if (totalDiff < 0) return -1;
       return 0;
     });
-  console.log(data, dataByDate, numChecksByDate, categories);
+  const checkArray = (dataArray: any[], category) => {
+    const checkArray = dataArray.map((d) => {
+      const { checks } = d;
+      return checks[category];
+    });
+    return checkArray;
+  };
 </script>
 
 <main
@@ -82,6 +88,7 @@
             warn={i === 0 &&
               past[past.length - 1].checks[category] === true &&
               past[0].checks[category] !== true}
+            checks={checkArray(past, category)}
             denominator={past.length}
             numerator={numChecks[category] || 0}
             targetPercent={targetPercentages[category]}
