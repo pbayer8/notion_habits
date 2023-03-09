@@ -59,6 +59,7 @@
       else if (totalDiff < 0) return -1;
       return 0;
     });
+  console.log(data, dataByDate, numChecksByDate, categories);
 </script>
 
 <main
@@ -68,7 +69,7 @@
   {#each categories as category}
     <Card>
       <div class="flex items-center justify-between">
-        <CardTitle>{category}</CardTitle>
+        <CardTitle>{category}{data[0].checks[category] ? " ✓" : ""}</CardTitle>
         <CardTitle>
           <span class="opacity-50">
             Goal: {targetDaysPerWeek[category] || targetDaysPerWeek._default}/7
@@ -76,8 +77,11 @@
         </CardTitle>
       </div>
       <div class="flex items-start justify-start gap-2">
-        {#each numChecksByDate as { past, numChecks }}
+        {#each numChecksByDate as { past, numChecks }, i}
           <CardGoal
+            warn={i === 0 &&
+              past[past.length - 1].checks[category] === true &&
+              past[0].checks[category] !== true}
             denominator={past.length}
             numerator={numChecks[category] || 0}
             targetPercent={targetPercentages[category]}

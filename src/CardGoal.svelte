@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let denominator, numerator, targetPercent;
+  export let denominator, numerator, targetPercent, warn;
   const percentHues = () => {
     const percent = numerator / denominator || 0;
     const percentOfTarget = percent / targetPercent || 0;
@@ -11,11 +11,14 @@
 </script>
 
 <div
-  class="rounded p-2"
+  class="relative rounded p-2"
   style:background={`hsl(${hue}, var(--card-saturation), var(--card-lightness))`}
 >
   <h3 class="m-0 text-5xl">{numerator}</h3>
   <p class="m-0 text-sm leading-3">/ {denominator} days</p>
+  {#if warn}
+    <p class="absolute top-1 right-1">*</p>
+  {/if}
 </div>
 
 <style>
